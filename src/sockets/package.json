@@ -4,20 +4,31 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "start": "nodemon index.js",
+    "start": "concurrently \"nodemon index.js\" \"webpack -w\"",
     "fillData": "node dev/fillData"
   },
   "dependencies": {
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-flow": "^6.23.0",
     "babel-preset-stage-2": "^6.24.1",
+    "body-parser": "^1.18.2",
     "express": "^4.16.2",
     "mysql": "^2.15.0",
-    "socket.io": "^2.0.4"
+    "ramda": "^0.25.0",
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0",
+    "recharts": "^1.0.0-beta.0",
+    "socket.io": "^2.0.4",
+    "socket.io-client": "^2.0.4"
   },
   "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-plugin-ramda": "^1.4.3",
     "babel-polyfill": "^6.26.0",
+    "babel-preset-react": "^6.24.1",
     "babel-register": "^6.26.0",
+    "concurrently": "^3.5.0",
     "nodemon": "^1.12.1"
   }
 }
