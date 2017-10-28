@@ -1,12 +1,30 @@
 import express from 'express' // library for simplified server in node.js
 import http from 'http' // native node js library (need for socket io)
 import socketIo from "socket.io" // library for web sockets
+import mysql from "mysql" // library - mysql node client
 
 // ===
 // Boilerplate - presný daný postup
 const app = express()
 const httpServer = http.Server(app);
 const io = socketIo(httpServer)
+
+const connection = mysql.createConnection({
+  host     : 'localhost',
+  user     : 'root',
+  password : '',
+  database : 'test',
+});
+
+connection.connect();
+
+connection.query('SELECT 1 + 1 AS solution', (error, results, fields) => {
+  if (error) throw error;
+  console.log('The solution is: ', results[0].solution);
+});
+
+connection.end();
+
 
 app.get('/', (req, res) => {
   console.log("response", res)
