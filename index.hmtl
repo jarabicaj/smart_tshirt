@@ -1,0 +1,39 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title></title>
+        <link rel="stylesheet" type="text/css" href="style_1.css">
+    </head>
+    <body>
+        <h1>Moja databáza</h1>
+        <form method="GET" action="pridaj.php">
+            <table>
+                <tr>
+                    <td>Zadaj meno: </td>
+                    <td><input name="name" type="text"></td>
+                </tr>
+                <tr>
+                    <td>Zadaj priezvisko: </td>
+                    <td><input name="surname" type="text"></td>
+                </tr>
+                <tr>
+                    <td>Zadaj číslo: </td>
+                    <td><input name="number" type="number"></td>
+                </tr>
+
+                <tr>
+                    <td colspan="2"><input style="width: 100%;" type="submit" value="Potvrď"></td>
+               </tr>
+            </table>
+        </form>
+        </br>
+        <footer>
+        <table style="border-collapse: collapse;">
+            <tr>
+                    <td><a href="zobraz.php">Zobraz tabuľku</a></td>
+            </tr>
+        </table>
+        </footer>
+
+    </body>
+</html>
