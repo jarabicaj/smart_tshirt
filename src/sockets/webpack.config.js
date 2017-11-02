@@ -1,8 +1,8 @@
 module.exports = {
-  entry: './client/index.js',
+  entry: ['babel-polyfill', './client/index.js'],
   output: {
     filename: 'app.bundle.js',
-    path: 'dist'
+    path: 'server/dist'
   },
   devtool: "source-map",
   module: {
