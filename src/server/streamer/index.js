@@ -1,5 +1,6 @@
 import { init as testingStreamInit } from "./testingStream/index";
 
+// https://stackoverflow.com/questions/14028148/convert-integer-array-to-string-at-javascript
 const convertToInt16ArrayString = bufferData => {
   const arr = new Int16Array(bufferData);
   let str = "";

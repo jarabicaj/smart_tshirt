@@ -1,10 +1,13 @@
 import express from "express";
+import bodyParser from "body-parser";
 import http from "http";
 
 // Services
 import { init as initDatabase } from "./database/index";
 import { startStreaming } from "./streamer/index";
 import initConnector from "./connector/index";
+
+import apiRouter from "./api/index";
 
 // const database = initDatabase()
 
@@ -16,11 +19,24 @@ import initConnector from "./connector/index";
 //   console.log("closed, data collected:", close());
 // }, 1000);
 
-// const app = express();
-const server = http.createServer();
+const initServer = async () => {
+  const app = express();
+  const server = http.createServer(app);
 
-initConnector(server);
+  // app.use(bodyParser.urlencoded({ extended: true }));
+  app.use(bodyParser.json())
 
-server.listen(5000, () => {
-  console.log("listening on :3000");
-});
+  const db = await initDatabase();
+
+  initConnector(server);
+
+  app.use("/api", apiRouter(db));
+
+  const PORT = 3000;
+
+  server.listen(PORT, () => {
+    console.log("websocket server listening on port:", PORT);
+  });
+};
+
+initServer();

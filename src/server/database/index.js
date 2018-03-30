@@ -5,13 +5,14 @@ import * as userApi from "./models/user/api";
 import * as valuesApi from "./models/values/api";
 import * as statsApi from "./models/stats/api";
 
-export const init = () => {
+export const init = () => new Promise((resolve, reject) => {
   mongoose.connect("mongodb://localhost/test");
   const db = mongoose.connection;
   db.on("error", console.error.bind(console, "connection error:"));
-  db.once("open", async () => {
+  db.once("open", () => {
     // we're connected!
     console.log("connected");
+    resolve(db)
     // Testing
     // const user = await userApi.createNewUser({ name: "kek" });
     // console.log("saved user", user);
@@ -34,6 +35,4 @@ export const init = () => {
     // });
     // console.log("saved stats", stats);
   });
-
-  return db;
-};
+});

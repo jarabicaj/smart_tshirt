@@ -1,5 +1,14 @@
 import User from "./model";
 
+export const getAllUsers = async () => {
+  try {
+    return await User.find()
+  } catch(err) {
+    console.log("error", err)
+    return null;
+  }
+}
+
 export const createNewUser = async (userInput) => {
   const user = new User(userInput);
   try {
