@@ -23,12 +23,21 @@ const apiRouter = db => {
       }))
     );
   });
+
+  router.get("/users/:id", async (req, res) => {
+    const user = await userApi.getUser(req.params.id);
+    res.json({
+      id: user._id,
+      name: user.name,
+    });
+  });
+
   router.post("/users", async (req, res) => {
     console.log("body", req.body);
     const newUser = await userApi.createNewUser({ name: req.body.name });
     res.json({
       id: newUser._id,
-      name: newUser.name,
+      name: newUser.name
     });
   });
   return router;

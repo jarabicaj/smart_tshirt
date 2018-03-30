@@ -15,14 +15,14 @@ const convertToInt16ArrayString = bufferData => {
 };
 
 export const startStreaming = callback => {
-  const stream = testingStreamInit(250);
+  const stream = testingStreamInit(50);
   const collectedData = [];
   stream.on("data", rawData => {
     // TODO: manipulate with rawData...
     const parsedData = convertToInt16ArrayString(rawData);
     const data = {
       time: new Date(),
-      value: parsedData,
+      value: Number(parsedData),
     }
     callback(data);
     collectedData.push(data);

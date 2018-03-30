@@ -8,6 +8,14 @@ export const getAllUsers = async () => {
     return null;
   }
 }
+export const getUser = async (id) => {
+  try {
+    return await User.findById(id)
+  } catch(err) {
+    console.log("error", err)
+    return null;
+  }
+}
 
 export const createNewUser = async (userInput) => {
   const user = new User(userInput);
