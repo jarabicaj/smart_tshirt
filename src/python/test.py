@@ -30,6 +30,8 @@ def on_error(ws, error):
     print(error)
 
 def on_close(ws):
+    sending = False
+    connected = False
     print("### closed ###")
 
 def on_open(ws):

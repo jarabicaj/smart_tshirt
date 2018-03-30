@@ -1,0 +1,30 @@
+{
+  "name": "smart_tshirt",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/jarabicaj/smart_tshirt.git",
+  "author": "VladimirJarabica <vladojarabica@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "start": "node index.js",
+    "start:dev": "nodemon index.js"
+  },
+  "dependencies": {
+    "mongoose": "^5.0.12",
+    "nodemon": "^1.17.2",
+    "ws": "^5.1.0"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-plugin-ramda": "^1.5.0",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-2": "^6.24.1",
+    "babel-register": "^6.26.0",
+    "byline": "^5.0.0",
+    "concurrently": "^3.5.1",
+    "parcel-bundler": "^1.7.0",
+    "prettier": "^1.11.1"
+  }
+}
