@@ -17,7 +17,7 @@ class TestingStream extends Readable {
 
   setNewStream = () => {
     this.originalStream = fs.createReadStream(
-      path.join(__dirname, "./data.txt"),
+      path.join(__dirname, "./squareData.txt"),
       {
         encoding: "utf8"
       }

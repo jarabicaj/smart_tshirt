@@ -1,7 +1,16 @@
 import * as React from "react";
 import * as R from "ramda";
+import {
+  LineChart,
+  CartesianGrid,
+  XAxis,
+  YAxis,
+  Line
+} from "recharts";
 
 import Loading from "../../../../components/Loading";
+
+const SAMPLES = 50;
 
 class Track extends React.Component {
   state = {
@@ -26,7 +35,6 @@ class Track extends React.Component {
 
       this.ws.onmessage = messageEvent => {
         const message = JSON.parse(messageEvent.data);
-        console.log("received:", message);
 
         if (message.type !== this.state.waitingResponse) {
           return;
@@ -40,7 +48,9 @@ class Track extends React.Component {
         }
         if (message.type === "data") {
           this.setState(state => ({
-            data: R.compose(R.takeLast(100), R.append(message.data))(state.data)
+            data: R.compose(R.takeLast(SAMPLES), R.concat(state.data))(
+              message.data
+            )
           }));
         }
         if (message.type === "stop") {
@@ -48,7 +58,7 @@ class Track extends React.Component {
           this.setState({
             waitingResponse: "",
             tracking: false,
-            data: R.takeLast(100, message.data)
+            data: R.takeLast(SAMPLES, message.data)
           });
         }
       };
@@ -87,17 +97,29 @@ class Track extends React.Component {
 
   render() {
     const { loading, tracking, waitingResponse, data } = this.state;
-    console.log("props", this.props);
+    // console.log("props", this.props);
 
     if (loading) return <Loading />;
-
     return (
       <div>
         Track waiting for: {waitingResponse} <br />
         {!tracking && <button onClick={this.startTracking}>Start</button>}
         {tracking && <button onClick={this.stopTracking}>Stop</button>}
         <br />
-        {data.map(piece => `${piece.value} `)}
+        <LineChart width={1000} height={300} data={data}>
+          <CartesianGrid isAnimationActive={false} stroke="#ccc" />
+          <XAxis isAnimationActive={!tracking} dataKey="time" />
+          <YAxis
+            isAnimationActive={false}
+            // domain={[-100, 500]}
+          />
+          <Line
+            type="monotone"
+            dataKey="value"
+            stroke="#8884d8"
+            dot={false}
+          />
+        </LineChart>
       </div>
     );
   }
