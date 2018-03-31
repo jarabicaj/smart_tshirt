@@ -10,7 +10,7 @@ import {
 
 import Loading from "../../../../components/Loading";
 
-const SAMPLES = 50;
+const SAMPLES = 200;
 
 class Track extends React.Component {
   state = {

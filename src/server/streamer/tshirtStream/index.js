@@ -7,7 +7,7 @@ import debounce from "../debounce";
 const convertToFloatArray = bufferData => {
   let buffer = new Int16Array(bufferData);
   // [1, 32767, 0, -1, -32768]
-  let result = new Float32Array(buffer.length);
+  let result = []//new Float32Array(buffer.length);
   // TODO: rewrite to map
   for (let i = 0; i < buffer.length; i++) {
     result[i] = {
@@ -79,7 +79,7 @@ export const init = (callback, debounceTime) => {
       send("M", stream);
       return;
     }
-    if (dataString.includes("Select mode")) {
+    if (dataString.includes("Square")) {
       tracking = true;
       send("S", stream);
       setTimeout(() => {
@@ -106,10 +106,10 @@ export const init = (callback, debounceTime) => {
   const close = () => {
     aok = 0;
     tracking = false;
-    send("X");
+    send("X", stream);
     setTimeout(() => {
       stream.set({ drt: true }, () => {
-        send("K");
+        send("K", stream);
       });
     }, 1000);
   };
