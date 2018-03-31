@@ -1,7 +1,10 @@
+import R from "ramda";
 import fs from "fs";
 import path from "path";
 import { Readable } from "stream";
 import byline from "byline";
+
+import debounce from "../debounce";
 
 class TestingStream extends Readable {
   stream = null;
@@ -51,6 +54,34 @@ class TestingStream extends Readable {
   }
 }
 
-export const init = (frequency = 250) => {
-  return new TestingStream({ frequency });
+export const init = (callback, frequency = 250, debounceTime = 100) => {
+  const stream = new TestingStream({ frequency });
+
+  let collectedData = [];
+
+  let cursor = 0;
+
+  const sendData = () => {
+    console.log("calling send data", cursor);
+    const oldCursor = cursor;
+    cursor = collectedData.length;
+    callback(R.slice(oldCursor, cursor, collectedData));
+  };
+  const debounced = debounce(sendData, debounceTime);
+
+  stream.on("data", rawData => {
+    const parsedData = rawData.toString();
+    const data = {
+      time: new Date(),
+      value: Number(parsedData)
+    };
+    collectedData.push(data);
+    debounced();
+  });
+
+  const close = () => {
+    stream.close();
+  };
+
+  return close;
 };
