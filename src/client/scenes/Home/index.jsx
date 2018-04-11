@@ -1,7 +1,34 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
+import styled from "styled-components";
 
-import Loading from "../../components/Loading"
+import COLORS from "../../constants/colors";
+import Loading from "../../components/Loading";
+import Card from "../../components/Card";
+import Button from "../../components/Button";
+import InputText from "../../components/InputText";
+
+const Wrapper = styled.div`
+  max-width: 800px;
+  margin: 0 auto;
+`;
+
+const Header = styled.h1`
+  color: ${COLORS.secondary};
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 0 5px;
+  box-sizing: border-box;
+`;
+const CardsWrapper = styled.div`
+  display: flex;
+  max-width: 600px;
+  margin: 0 auto;
+`;
+const CardContentWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
 
 class Home extends React.Component {
   state = {
@@ -26,14 +53,14 @@ class Home extends React.Component {
       .then(data => {
         this.setState({
           users: data,
-          loading: false,
+          loading: false
         });
       });
   }
 
   toggleLoading = () => {
-    this.setState(state => ({loading: !state.loading}))
-  }
+    this.setState(state => ({ loading: !state.loading }));
+  };
 
   setUser = event => {
     console.log("setUser", event.target.value);
@@ -72,31 +99,42 @@ class Home extends React.Component {
   render() {
     const { loading, selectedUserId, users, newUser } = this.state;
 
-    if (loading) return <Loading/>
+    if (loading) return <Loading />;
 
     return (
-      <div>
-        <h1>Smart Tshirt</h1>
-        Select user or create new one
-        <select
-          name="user"
-          id="user"
-          value={selectedUserId}
-          onChange={this.setUser}
-        >
-          <option key="unselected" value={null}>
-            Unselected
-          </option>
-          {users.map(user => (
-            <option key={user.is} value={user.id}>
-              {user.name}
-            </option>
-          ))}
-        </select>
-        <Link to={`/user/${selectedUserId}`}>Go!</Link>
-        <input type="text" value={newUser} onChange={this.setNewUser} />
-        <button onClick={this.createNewUser}>Create!</button>
-      </div>
+      <Wrapper>
+        <Header>Smart Tshirt</Header>
+        <CardsWrapper>
+          <Card>
+            <CardContentWrapper>
+              <h3>Select user</h3>
+              <select
+                name="user"
+                id="user"
+                value={selectedUserId}
+                onChange={this.setUser}
+              >
+                <option key="unselected" value={null}>
+                  Unselected
+                </option>
+                {users.map(user => (
+                  <option key={user.is} value={user.id}>
+                    {user.name}
+                  </option>
+                ))}
+              </select>
+              <Button linkTo={`/user/${selectedUserId}`}>Go!</Button>
+            </CardContentWrapper>
+          </Card>
+          <Card>
+            <CardContentWrapper>
+              <h3>Create new one user</h3>
+              <InputText placeholder="Name" type="text" value={newUser} onChange={this.setNewUser} />
+              <Button onClick={this.createNewUser}>Create!</Button>
+            </CardContentWrapper>
+          </Card>
+        </CardsWrapper>
+      </Wrapper>
     );
   }
 }

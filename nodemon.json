@@ -1,3 +1,4 @@
 {
-  "ignore": ["src/client/*.*"]
+  "verbose": false,
+  "ignore": ["src/client/*", "dist/*", "client.js"]
 }
