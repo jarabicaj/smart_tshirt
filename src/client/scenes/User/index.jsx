@@ -43,7 +43,7 @@ class User extends React.Component {
         <h1>{user.name}</h1>
         <Link to={`${match.url}/history`}>Passed data</Link>
         <Link to={`${match.url}/track`}>Monitor</Link>
-        <Route path={`${match.url}/history`} component={History} />
+        <Route path={`/user/:id/history`} component={History} />
         <Route path={`/user/:id/track`} component={Track} />
       </div>
     );

@@ -1,6 +1,9 @@
 import { Router } from "express";
+import * as R from "ramda";
 
 import * as userApi from "../database/models/user/api";
+import * as statsApi from "../database/models/stats/api";
+import * as valuesApi from "../database/models/values/api";
 
 const apiRouter = db => {
   const router = Router();
@@ -28,7 +31,7 @@ const apiRouter = db => {
     const user = await userApi.getUser(req.params.id);
     res.json({
       id: user._id,
-      name: user.name,
+      name: user.name
     });
   });
 
@@ -40,6 +43,38 @@ const apiRouter = db => {
       name: newUser.name
     });
   });
+
+  router.get("/stats/:id", async (req, res) => {
+    const stats = await statsApi.getStats(req.params.id);
+    res.json(
+      R.map(
+        stat => ({
+          id: stat._id,
+          userId: stat.userId,
+          from: stat.from,
+          to: stat.to,
+          values: stat.values
+        }),
+        stats
+      )
+    );
+  });
+
+  router.get("/values/:id", async (req, res) => {
+    const values = await valuesApi.getValues(req.params.id);
+    res.json({
+      id: values._id,
+      data: R.map(
+        value => ({
+          id: value._id,
+          time: value.time,
+          value: value.value
+        }),
+        values.data
+      ),
+    });
+  });
+
   return router;
 };
 

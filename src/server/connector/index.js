@@ -37,7 +37,6 @@ const init = server => {
         const streamData = cancelStream();
         // TODO: save streamData to db
         cancelStream = null;
-        userId = null;
         const savedValues = await valuesApi.saveValues({data: streamData})
         await statsApi.saveStats({
           userId: mongoose.Types.ObjectId(userId),
@@ -45,6 +44,7 @@ const init = server => {
           to: streamData[streamData.length - 1].time,
           values: mongoose.Types.ObjectId(savedValues._id)
         })
+        userId = null;
         ws.send(
           JSON.stringify({
             type: "stop",

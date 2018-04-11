@@ -30,11 +30,13 @@ const CardContentWrapper = styled.div`
   flex-direction: column;
 `;
 
+const UNSELECTED = "unselected"
+
 class Home extends React.Component {
   state = {
     loading: true,
     users: [],
-    selectedUserId: null,
+    selectedUserId: UNSELECTED,
     newUser: ""
   };
 
@@ -100,6 +102,7 @@ class Home extends React.Component {
     const { loading, selectedUserId, users, newUser } = this.state;
 
     if (loading) return <Loading />;
+    console.log("selectedUserId", selectedUserId);
 
     return (
       <Wrapper>
@@ -114,7 +117,7 @@ class Home extends React.Component {
                 value={selectedUserId}
                 onChange={this.setUser}
               >
-                <option key="unselected" value={null}>
+                <option key={UNSELECTED} value={UNSELECTED}>
                   Unselected
                 </option>
                 {users.map(user => (
@@ -123,13 +126,23 @@ class Home extends React.Component {
                   </option>
                 ))}
               </select>
-              <Button linkTo={`/user/${selectedUserId}`}>Go!</Button>
+              <Button
+                disabled={selectedUserId === UNSELECTED}
+                linkTo={`/user/${selectedUserId}`}
+              >
+                Go!
+              </Button>
             </CardContentWrapper>
           </Card>
           <Card>
             <CardContentWrapper>
               <h3>Create new one user</h3>
-              <InputText placeholder="Name" type="text" value={newUser} onChange={this.setNewUser} />
+              <InputText
+                placeholder="Name"
+                type="text"
+                value={newUser}
+                onChange={this.setNewUser}
+              />
               <Button onClick={this.createNewUser}>Create!</Button>
             </CardContentWrapper>
           </Card>

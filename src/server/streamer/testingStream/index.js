@@ -81,6 +81,7 @@ export const init = (callback, frequency = 250, debounceTime = 100) => {
 
   const close = () => {
     stream.close();
+    return collectedData;
   };
 
   return close;

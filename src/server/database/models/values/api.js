@@ -9,3 +9,12 @@ export const saveValues = async (valuesInput) => {
     return null;
   }
 }
+
+export const getValues = async (id) => {
+  try {
+    return await Values.findById(id)
+  } catch(err) {
+    console.log("error", err)
+    return null;
+  }
+}
