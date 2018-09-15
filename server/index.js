@@ -24,7 +24,7 @@ let writeClient = new Client({
   db: "awesome"
 });
 
-const step = 1.953125;
+const step = 1.953125; // 1000 / 512
 
 const readData = next =>
   new Promise(resolve => {
