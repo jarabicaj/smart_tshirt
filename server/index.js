@@ -11,6 +11,7 @@ const data = fs
 // https://stackoverflow.com/questions/45494970/start-and-stop-python-script-from-nodejs
 
 const app = express();
+app.use(express.static("public"));
 
 let reading = false;
 
