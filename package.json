@@ -10,9 +10,20 @@
   "dependencies": {
     "express": "^4.16.3",
     "mariasql": "^0.2.6",
-    "nodemon": "^1.18.4"
+    "nodemon": "^1.18.4",
+    "react": "^16.5.1",
+    "react-charts": "^1.0.10",
+    "react-dom": "^16.5.1"
   },
   "devDependencies": {
+    "@babel/core": "^7.0.1",
+    "@babel/plugin-proposal-class-properties": "^7.0.0",
+    "@babel/plugin-transform-runtime": "^7.0.0",
+    "@babel/preset-env": "^7.0.0",
+    "@babel/preset-flow": "^7.0.0",
+    "@babel/preset-react": "^7.0.0",
+    "@babel/register": "^7.0.0",
+    "babel-loader": "^8.0.2",
     "concurrently": "^4.0.1",
     "webpack": "^4.19.0",
     "webpack-cli": "^3.1.0"
