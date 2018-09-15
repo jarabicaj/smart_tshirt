@@ -1,0 +1,11 @@
+{
+  "scripts": {
+    "start": "node server/index.js",
+    "start:dev": "nodemon server/index.js"
+  },
+  "dependencies": {
+    "express": "^4.16.3",
+    "mariasql": "^0.2.6",
+    "nodemon": "^1.18.4"
+  }
+}
