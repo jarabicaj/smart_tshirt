@@ -1,4 +1,12 @@
 import * as React from "react";
 import ReactDOM from "react-dom";
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
-ReactDOM.render(<h1>Pepo je pepo</h1>, document.getElementById("app"));
+import Root from "./Root";
+
+ReactDOM.render(
+  <Router>
+    <Root />
+  </Router>,
+  document.getElementById("app")
+);

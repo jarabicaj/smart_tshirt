@@ -12,8 +12,10 @@
     "mariasql": "^0.2.6",
     "nodemon": "^1.18.4",
     "react": "^16.5.1",
-    "react-charts": "^1.0.10",
-    "react-dom": "^16.5.1"
+    "react-dom": "^16.5.1",
+    "react-router": "^4.3.1",
+    "react-router-dom": "^4.3.1",
+    "recharts": "^1.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.0.1",
@@ -23,6 +25,7 @@
     "@babel/preset-flow": "^7.0.0",
     "@babel/preset-react": "^7.0.0",
     "@babel/register": "^7.0.0",
+    "@babel/runtime": "^7.0.0",
     "babel-loader": "^8.0.2",
     "concurrently": "^4.0.1",
     "webpack": "^4.19.0",

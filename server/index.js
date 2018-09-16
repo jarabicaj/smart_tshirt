@@ -1,5 +1,6 @@
 const express = require("express");
 const fs = require("fs");
+const path = require("path");
 const Client = require("mariasql");
 
 const data = fs
@@ -46,7 +47,7 @@ const readData = next =>
     }, timeout);
   });
 
-app.get("/stop", (req, res) => {
+app.post("/api/stop", (req, res) => {
   reading = false;
   setTimeout(() => {
     writeClient.end();
@@ -54,14 +55,14 @@ app.get("/stop", (req, res) => {
   res.sendStatus(200);
 });
 
-app.get("/start", (req, res) => {
+app.post("/api/start", (req, res) => {
   reading = true;
   lastSave = new Date().getTime();
   readData(readData);
   res.sendStatus(200);
 });
 
-app.get("/data", (req, res) => {
+app.get("/api/data", (req, res) => {
   const client = new Client({
     host: "127.0.0.1",
     user: "root",
@@ -69,17 +70,27 @@ app.get("/data", (req, res) => {
     db: "awesome"
   });
 
-  client.query("SELECT * FROM data", function(err, rows) {
+  client.query(`SELECT * FROM data WHERE timestamp>${req.query.from}`, function(
+    err,
+    rows
+  ) {
     if (err) {
       res.send({ status: "error" });
     }
     res.send({
       status: "success",
-      data: rows
+      data: rows.map(row => ({
+        timestamp: parseInt(row.timestamp),
+        value: parseFloat(row.value)
+      }))
     });
   });
 
   client.end();
+});
+
+app.get("/*", (req, res) => {
+  res.sendFile("index.html", { root: path.join(__dirname, "../public") });
 });
 
 app.listen(3000, () => console.log("Example app listening on port 3000!"));
