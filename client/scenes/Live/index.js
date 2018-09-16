@@ -6,6 +6,7 @@ import { start, stop, getData } from "./services/api";
 const DELAY = 2000; // ms
 const REPEAT = 1000; // ms
 const WINDOW = 2000; // ms
+const DATA_PER_SEC = 512;
 
 class Live extends React.PureComponent {
   interval = null;
@@ -61,7 +62,7 @@ class Live extends React.PureComponent {
   };
 
   render() {
-    const { name, data } = this.state;
+    const { name, data, active } = this.state;
     console.log("render data:", data);
     return (
       <div>
@@ -69,7 +70,15 @@ class Live extends React.PureComponent {
         <input value={name} onChange={this.handleChangeName} />
         <button onClick={this.start}>Start</button>
         <button onClick={this.stop}>Stop</button>
-        <Chart data={data} interval={128} delay={DELAY} />
+        <Chart
+          active={active}
+          data={data}
+          dataLength={(WINDOW / 1000) * DATA_PER_SEC}
+          dataPerSec={DATA_PER_SEC}
+          interval={64}
+          // interval={10000}
+          delay={DELAY}
+        />
       </div>
     );
   }

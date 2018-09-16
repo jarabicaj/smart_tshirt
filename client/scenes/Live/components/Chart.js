@@ -9,7 +9,7 @@ import {
   Legend
 } from "recharts";
 
-// props: data, interval, delay
+// props: data, interval, delay, dataLength, dataPerSec, active
 
 class Chart extends React.PureComponent {
   interval = null;
@@ -24,15 +24,29 @@ class Chart extends React.PureComponent {
   }
 
   takeData = () => {
-    const { data, delay } = this.props;
+    const { data, delay, dataLength, dataPerSec, active } = this.props;
+    if (!active) {
+      return;
+    }
     const lastTimestamp = new Date().getTime() - delay;
+    const filteredData = data.filter(x => x.timestamp < lastTimestamp);
+    const emptyDataLength = dataLength - filteredData;
+    console.log("takeData", lastTimestamp, dataPerSec, dataLength);
+    const emptyData =
+      emptyDataLength > 0
+        ? new Array(emptyDataLength).fill(undefined).map((_, index) => ({
+            timestamp: lastTimestamp + dataPerSec * index,
+            value: 150
+          }))
+        : [];
+    console.log("emptydata", emptyData);
     this.setState({
-      data: data.filter(x => x.timestamp < lastTimestamp)
+      data: emptyData.concat(filteredData)
     });
   };
 
   render() {
-    const { data } = this.props;
+    const { data } = this.state;
     return (
       <LineChart
         width={730}
@@ -45,8 +59,15 @@ class Chart extends React.PureComponent {
         <YAxis dataKey="value" />
         <Tooltip />
         <Legend />
-        <Line type="monotone" dataKey="timestamp" stroke="#8884d8" />
-        <Line type="monotone" dataKey="value" stroke="#82ca9d" />
+        {/* <Line type="monotone" dataKey="timestamp" stroke="#8884d8" /> */}
+        <Line
+          dot={false}
+          activeDot={false}
+          isAnimationActive={false}
+          type="monotone"
+          dataKey="value"
+          stroke="#82ca9d"
+        />
       </LineChart>
     );
   }
