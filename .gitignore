@@ -4,3 +4,4 @@ node_modules
 npm-debug*
 public/bundle.js
 yarn-error.log
+config.js

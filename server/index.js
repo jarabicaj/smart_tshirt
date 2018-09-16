@@ -2,6 +2,7 @@ const express = require("express");
 const fs = require("fs");
 const path = require("path");
 const Client = require("mariasql");
+const dbConfig = require("../config.js").dbConfig;
 
 const data = fs
   .readFileSync("./server/data.txt")
@@ -18,12 +19,7 @@ let reading = false;
 
 let lastSave = null;
 
-let writeClient = new Client({
-  host: "127.0.0.1",
-  user: "root",
-  password: "",
-  db: "awesome"
-});
+let writeClient = new Client(dbConfig);
 
 const step = 1.953125; // 1000 / 512
 
@@ -63,12 +59,7 @@ app.post("/api/start", (req, res) => {
 });
 
 app.get("/api/data", (req, res) => {
-  const client = new Client({
-    host: "127.0.0.1",
-    user: "root",
-    password: "",
-    db: "awesome"
-  });
+  const client = new Client(dbConfig);
 
   client.query(`SELECT * FROM data WHERE timestamp>${req.query.from}`, function(
     err,
