@@ -23,7 +23,7 @@ const Content = styled(Flex)`
 `;
 
 const SetMeasure = props => {
-  const { setMeasure, addResult } = useContext(ecgContext);
+  const { setMeasure } = useContext(ecgContext);
   const [name, setName] = useState("");
   const [age, setAge] = useState(18);
   const [data, setData] = useState([]);

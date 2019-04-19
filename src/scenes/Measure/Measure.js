@@ -13,7 +13,6 @@ let interval = null;
 const Measure = () => {
   const {
     measure: { data, frequency },
-    perSecond,
     addResult
   } = useContext(exgContext);
 
