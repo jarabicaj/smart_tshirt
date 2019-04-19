@@ -52,6 +52,7 @@ const Measure = () => {
   const clear = () => {
     setTime(0);
     setBeats(0);
+    setVisualData([]);
   };
 
   const addBeat = () => {
@@ -85,7 +86,7 @@ const Measure = () => {
 
   const seconds = time / frequency;
 
-  const bpm = (60 * beats) / seconds;
+  const bpm = Math.ceil((60 * beats) / seconds);
 
   const save = () => {
     message.success("Saved!", 3);
