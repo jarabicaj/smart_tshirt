@@ -1,6 +1,10 @@
-import React, { useContext, useState, useEffect } from "react";
-import exgContext from "../../services/ecgContext";
+import React, { useContext, useState } from "react";
 import { Button } from "antd";
+
+import exgContext from "../../services/ecgContext";
+import Chart from "./components/Chart";
+
+const VISUAL_DATA_LENGTH = 2000;
 
 const PEAK = 300;
 
@@ -11,16 +15,24 @@ const Measure = () => {
     measure: { data, frequency },
     perSecond
   } = useContext(exgContext);
-  // console.log("measure", data);
 
   let peak = null;
 
   const [running, setRunning] = useState(false);
   const [time, setTime] = useState(0);
+  const [visualData, setVisualData] = useState([]);
 
   // const [peak, setPeak] = useState(null);
 
   const [beats, setBeats] = useState(0);
+
+  const value = data[time % data.length];
+
+  const addValueToVisualData = (timestamp, value) => {
+    setVisualData(visual =>
+      visual.concat([{ timestamp, value }]).slice(-VISUAL_DATA_LENGTH)
+    );
+  };
 
   const toggle = () => {
     if (running) {
@@ -30,7 +42,9 @@ const Measure = () => {
       // setTime(0);
       interval = setInterval(() => {
         setTime(t => {
-          checkPeak(data[t % data.length]);
+          const value = data[t % data.length];
+          addValueToVisualData(t, value);
+          checkPeak(value);
           // if (t >= data.length) {
           //   return 0;
           // }
@@ -52,16 +66,13 @@ const Measure = () => {
   };
 
   const checkPeak = value => {
-    // console.log("checkPeak", value);
     // Start of peak
     if (peak === null && value >= PEAK) {
-      console.log("START");
       peak = { value, time, set: false };
       return;
     }
     // End of peak
     if (peak && value < PEAK) {
-      console.log("END");
       peak = null;
       return;
     }
@@ -79,13 +90,15 @@ const Measure = () => {
     }
   };
 
-  const bpm = (60 * beats) / (time / frequency);
+  const seconds = time / frequency;
+
+  const bpm = (60 * beats) / seconds;
 
   return (
     <div>
       Measure. Time: {time}
       <br />
-      Value: {running ? data[time % data.length] : 0}
+      Value: {running ? value : 0}
       <br />
       Peak: {JSON.stringify(peak)}
       <br />
@@ -93,9 +106,10 @@ const Measure = () => {
       <br />
       Bet per minute: {bpm}
       <br />
-      Seconds: {time / frequency} <br />
+      Seconds: {seconds} <br />
       <Button onClick={toggle}>{running ? "Stop" : "Start"}</Button>
       {!running && <Button onClick={clear}>Clear</Button>}
+      <Chart data={visualData} timestamp={Math.floor(seconds * 10)} />
     </div>
   );
 };
