@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { Button } from "antd";
+import { Button, message } from "antd";
 
 import exgContext from "../../services/ecgContext";
 import Chart from "./components/Chart";
@@ -13,7 +13,8 @@ let interval = null;
 const Measure = () => {
   const {
     measure: { data, frequency },
-    perSecond
+    perSecond,
+    addResult
   } = useContext(exgContext);
 
   let peak = null;
@@ -21,8 +22,6 @@ const Measure = () => {
   const [running, setRunning] = useState(false);
   const [time, setTime] = useState(0);
   const [visualData, setVisualData] = useState([]);
-
-  // const [peak, setPeak] = useState(null);
 
   const [beats, setBeats] = useState(0);
 
@@ -39,18 +38,13 @@ const Measure = () => {
       clearInterval(interval);
       setRunning(false);
     } else {
-      // setTime(0);
       interval = setInterval(() => {
         setTime(t => {
           const value = data[t % data.length];
           addValueToVisualData(t, value);
           checkPeak(value);
-          // if (t >= data.length) {
-          //   return 0;
-          // }
           return t + 1;
         });
-        // checkPeak(data[time]);
       }, 1000 / frequency);
       setRunning(true);
     }
@@ -94,6 +88,11 @@ const Measure = () => {
 
   const bpm = (60 * beats) / seconds;
 
+  const save = () => {
+    message.success("Saved!", 3);
+    addResult(bpm);
+  };
+
   return (
     <div>
       Measure. Time: {time}
@@ -109,6 +108,7 @@ const Measure = () => {
       Seconds: {seconds} <br />
       <Button onClick={toggle}>{running ? "Stop" : "Start"}</Button>
       {!running && <Button onClick={clear}>Clear</Button>}
+      {!running && <Button onClick={save}>Save</Button>}
       <Chart data={visualData} timestamp={Math.floor(seconds * 10)} />
     </div>
   );

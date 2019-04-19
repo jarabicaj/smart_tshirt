@@ -19,11 +19,26 @@ export class EcgProvider extends React.Component {
     this.setState({ measure });
   };
 
+  addResult = bpm => {
+    this.setState(({ measure, results }) => ({
+      results: results.concat({
+        bpm,
+        name: measure.name,
+        age: measure.age
+      })
+    }));
+  };
+
   render() {
     const { measure, results } = this.state;
     return (
       <exgContext.Provider
-        value={{ measure, results, setMeasure: this.setMeasure }}
+        value={{
+          measure,
+          results,
+          setMeasure: this.setMeasure,
+          addResult: this.addResult
+        }}
       >
         {this.props.children}
       </exgContext.Provider>

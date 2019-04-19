@@ -8,15 +8,24 @@ import SetMeasure from "./scenes/SetMeasure/SetMeasure";
 import Measure from "./scenes/Measure/Measure";
 import Results from "./scenes/Results/Results";
 
+const Container = styled.div`
+  width: 80%;
+  max-width: 800px;
+  margin: 0 auto;
+  height: 100%;
+`;
+
 class App extends Component {
   render() {
     return (
-      <Router>
-        <Header />
-        <Route path="/" exact component={SetMeasure} />
-        <Route path="/measure/" component={Measure} />
-        <Route path="/results/" component={Results} />
-      </Router>
+      <Container flex={1}>
+        <Router>
+          <Header />
+          <Route path="/" exact component={SetMeasure} />
+          <Route path="/measure/" component={Measure} />
+          <Route path="/results/" component={Results} />
+        </Router>
+      </Container>
     );
   }
 }
