@@ -31,7 +31,6 @@ const SetMeasure = props => {
 
   const loadData = e => {
     const files = e.target.files;
-    console.log("files", files);
     const reader = new FileReader();
     reader.onload = () => {
       setData(reader.result.split(";").map(x => Number(x.replace(",", "."))));

@@ -17,6 +17,11 @@ const COLUMNS = [
     title: "BPM",
     dataIndex: "bpm",
     key: "bpm"
+  },
+  {
+    title: "Average R amplitude",
+    dataIndex: "ramp",
+    key: "ramp"
   }
 ];
 

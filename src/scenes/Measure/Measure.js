@@ -3,6 +3,9 @@ import { Button, message } from "antd";
 
 import exgContext from "../../services/ecgContext";
 import Chart from "./components/Chart";
+import round from "../../services/round";
+
+const arrAvg = arr => arr.reduce((a, b) => a + b, 0) / arr.length;
 
 const VISUAL_DATA_LENGTH = 2000;
 
@@ -21,10 +24,11 @@ const Measure = () => {
   const [running, setRunning] = useState(false);
   const [time, setTime] = useState(0);
   const [visualData, setVisualData] = useState([]);
+  const [ramps, setRamps] = useState([]);
 
   const [beats, setBeats] = useState(0);
 
-  const value = data[time % data.length];
+  const value = round(data[time % data.length], 1);
 
   const addValueToVisualData = (timestamp, value) => {
     setVisualData(visual =>
@@ -53,10 +57,15 @@ const Measure = () => {
     setTime(0);
     setBeats(0);
     setVisualData([]);
+    setRamps([]);
   };
 
   const addBeat = () => {
     setBeats(beats => beats + 1);
+  };
+
+  const addRamp = peakValue => {
+    setRamps(ramps => ramps.concat([peakValue]));
   };
 
   const checkPeak = value => {
@@ -74,12 +83,14 @@ const Measure = () => {
     // Ascending
     if (peak && value > peak.value) {
       peak = { value, time, set: false };
+      return;
     }
 
     // Descending
     if (peak && value < peak.value && !peak.set) {
       // "ADDING BPM"
       addBeat();
+      addRamp(peak.value);
       peak = { ...peak, set: true };
     }
   };
@@ -87,10 +98,11 @@ const Measure = () => {
   const seconds = time / frequency;
 
   const bpm = Math.ceil((60 * beats) / seconds);
+  const averageRamp = round(arrAvg(ramps), 3) || 0;
 
   const save = () => {
     message.success("Saved!", 3);
-    addResult(bpm);
+    addResult(bpm, averageRamp);
   };
 
   return (
@@ -100,6 +112,8 @@ const Measure = () => {
       Value: {running ? value : 0}
       <br />
       Peak: {JSON.stringify(peak)}
+      <br />
+      Average r ampliture: {averageRamp}
       <br />
       Beats: {beats}
       <br />

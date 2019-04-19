@@ -1,4 +1,5 @@
 import React, { createContext } from "react";
+import round from "./round";
 
 const exgContext = createContext();
 
@@ -19,10 +20,11 @@ export class EcgProvider extends React.Component {
     this.setState({ measure });
   };
 
-  addResult = bpm => {
+  addResult = (bpm, ramp) => {
     this.setState(({ measure, results }) => ({
       results: results.concat({
         bpm,
+        ramp: round(ramp, 3),
         name: measure.name,
         age: measure.age
       })
